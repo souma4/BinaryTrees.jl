@@ -1,0 +1,7 @@
+name = "TreeDataStructures"
+uuid = "289e92be-c05a-437b-9e67-5b0c799891f8"
+authors = ["Elias Carvalho <eliascarvdev@gmail.com> and contributors"]
+version = "0.1.0"
+
+[compat]
+julia = "1.10"
