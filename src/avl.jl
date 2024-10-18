@@ -29,6 +29,16 @@ end
 
 AbstractTrees.nodevalue(node::AVLNode) = node.value
 
+AbstractTrees.NodeType(::Type{<:AVLNode}) = HasNodeType()
+AbstractTrees.nodetype(T::Type{<:AVLNode}) = T
+
+function AbstractTrees.printnode(io::IO, node::AVLNode)
+  ioctx = IOContext(io, :compact => true, :limit => true)
+  show(ioctx, node.key)
+  print(ioctx, " => ")
+  show(ioctx, node.value)
+end
+
 # ---------
 # AVL TREE
 # ---------
