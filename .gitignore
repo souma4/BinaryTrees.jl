@@ -1,4 +1,9 @@
 *.jl.*.cov
 *.jl.cov
 *.jl.mem
-/Manifest.toml
+Manifest.toml
+.vscode
+*.code-workspace
+docs/build
+/.benchmarkci
+/benchmark/*.json

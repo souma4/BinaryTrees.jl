@@ -1,5 +1,9 @@
 module TreeDataStructures
 
-# Write your package code here.
+import AbstractTrees
+
+include("avl.jl")
+
+export AVLTree
 
 end
