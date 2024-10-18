@@ -51,6 +51,11 @@ function Base.setindex!(tree::AVLTree, value, key)
   tree
 end
 
+function Base.delete!(tree::AVLTree{K}, key::K) where {K}
+  _delete!(tree.root, key)
+  tree
+end
+
 function Base.show(io::IO, ::MIME"text/plain", tree::AVLTree)
   if isnothing(tree.root)
     print(io, "AVLTree()")
@@ -78,11 +83,14 @@ function _insert!(root, key, value)
     return AVLNode(key, value)
   elseif key < root.key
     root.left = _insert!(root.left, key, value)
-  else
+  elseif key > root.key
     root.right = _insert!(root.right, key, value)
+  else
+    root.value = value
+    return root
   end
 
-  root.height = 1 + max(_height(root.left), _height(root.right))
+  _updateheight!(root)
 
   bf = _balancefactor(root)
 
@@ -99,14 +107,44 @@ function _insert!(root, key, value)
   end
 end
 
-_height(::Nothing) = 0
-_height(node::AVLNode) = node.height
+function _delete!(root, key)
+  if isnothing(root)
+    return root
+  elseif key < root.key
+    root.left = _delete!(root.left, key)
+  elseif key > root.key
+    root.right = _delete!(root.right, key)
+  else
+    if isnothing(root.left)
+      return root.right
+    elseif isnothing(root.right)
+      return root.left
+    else
+      temp = _minnode(root.right)
+      root.key = temp.key
+      root.value = temp.value
+      root.right = _delete!(root.right, temp.key)
+    end
+  end
 
-_balancefactor(::Nothing) = 0
-_balancefactor(node::AVLNode) = _height(node.left) - _height(node.right)
+  _updateheight!(root)
 
-_minnode(::Nothing) = nothing
-_minnode(node::AVLNode) = isnothing(node.left) ? node : _minnode(node.left)
+  bf = _balancefactor(root)
+
+  if bf > 1 && _balancefactor(root.left) ≥ 0
+    _rightrotate!(root)
+  elseif bf < -1 && _balancefactor(root.right) ≤ 0
+    _leftrotate!(root)
+  elseif bf > 1 && _balancefactor(root.left) < 0
+    root.left = _leftrotate!(root.left)
+    _rightrotate!(root)
+  elseif bf < -1 && _balancefactor(root.right) > 0
+    root.right = _rightrotate!(root.right)
+    _leftrotate!(root)
+  else
+    root
+  end
+end
 
 function _leftrotate!(node)
   B = node.right
@@ -115,8 +153,8 @@ function _leftrotate!(node)
   B.left = node
   node.right = Y
 
-  node.height = 1 + max(_height(node.left), _height(node.right))
-  B.height = 1 + max(_height(B.left), _height(B.right))
+  _updateheight!(node)
+  _updateheight!(B)
 
   B
 end
@@ -128,8 +166,22 @@ function _rightrotate!(node)
   A.right = node
   node.left = Y
 
-  node.height = 1 + max(_height(node.left), _height(node.right))
-  A.height = 1 + max(_height(A.left), _height(A.right))
+  _updateheight!(node)
+  _updateheight!(A)
 
   A
 end
+
+function _updateheight!(node)
+  node.height = 1 + max(_height(node.left), _height(node.right))
+  node
+end
+
+_height(::Nothing) = 0
+_height(node::AVLNode) = node.height
+
+_balancefactor(::Nothing) = 0
+_balancefactor(node::AVLNode) = _height(node.left) - _height(node.right)
+
+_minnode(::Nothing) = nothing
+_minnode(node::AVLNode) = isnothing(node.left) ? node : _minnode(node.left)
