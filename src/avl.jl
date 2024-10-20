@@ -187,11 +187,8 @@ function _updateheight!(node)
   node
 end
 
-_height(::Nothing) = 0
-_height(node::AVLNode) = node.height
+_height(node) = isnothing(node) ? 0 : node.height
 
-_balancefactor(::Nothing) = 0
-_balancefactor(node::AVLNode) = _height(node.left) - _height(node.right)
+_balancefactor(node) = isnothing(node) ? 0 : _height(node.left) - _height(node.right)
 
-_minnode(::Nothing) = nothing
-_minnode(node::AVLNode) = isnothing(node.left) ? node : _minnode(node.left)
+_minnode(node) = isnothing(node) || isnothing(node.left) ? node : _minnode(node.left)
