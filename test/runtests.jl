@@ -140,6 +140,19 @@ using Test
     @test tree.root.left.key == 1
     @test tree.root.right.key == 3
 
+    # deleting the root node
+    tree = AVLTree{Int,Int}()
+    tree[4] = 40
+    tree[2] = 20
+    tree[5] = 50
+    tree[1] = 10
+    tree[3] = 30
+    delete!(tree, 4)
+    @test tree.root.key == 2
+    @test tree.root.left.key == 1
+    @test tree.root.right.key == 5
+    @test tree.root.right.left.key == 3
+
     # tree that accepts any types
     tree = AVLTree()
     tree[2] = 'A'
