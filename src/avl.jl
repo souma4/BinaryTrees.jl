@@ -62,7 +62,7 @@ function Base.setindex!(tree::AVLTree, value, key)
 end
 
 function Base.delete!(tree::AVLTree{K}, key::K) where {K}
-  _delete!(tree.root, key)
+  tree.root = _delete!(tree.root, key)
   tree
 end
 
