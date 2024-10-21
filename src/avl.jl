@@ -29,7 +29,7 @@ end
 
 AbstractTrees.nodevalue(node::AVLNode) = node.value
 
-AbstractTrees.NodeType(::Type{<:AVLNode}) = HasNodeType()
+AbstractTrees.NodeType(::Type{<:AVLNode}) = AbstractTrees.HasNodeType()
 AbstractTrees.nodetype(T::Type{<:AVLNode}) = T
 
 function AbstractTrees.printnode(io::IO, node::AVLNode)
@@ -109,9 +109,9 @@ function _insert!(root, key, value)
   elseif bf < -1 && key > root.right.key
     _leftrotate!(root)
   elseif bf > 1 && key > root.left.key
-    _rightrotate!(root)
+    _leftrightrotate!(root)
   elseif bf < -1 && key < root.right.key
-    _leftrotate!(root)
+    _rightleftrotate!(root)
   else
     root
   end
@@ -146,11 +146,9 @@ function _delete!(root, key)
   elseif bf < -1 && _balancefactor(root.right) ≤ 0
     _leftrotate!(root)
   elseif bf > 1 && _balancefactor(root.left) < 0
-    root.left = _leftrotate!(root.left)
-    _rightrotate!(root)
+    _leftrightrotate!(root)
   elseif bf < -1 && _balancefactor(root.right) > 0
-    root.right = _rightrotate!(root.right)
-    _leftrotate!(root)
+    _rightleftrotate!(root)
   else
     root
   end
@@ -180,6 +178,16 @@ function _rightrotate!(node)
   _updateheight!(A)
 
   A
+end
+
+function _leftrightrotate!(node)
+  node.left = _leftrotate!(node.left)
+  _rightrotate!(node)
+end
+
+function _rightleftrotate!(node)
+  node.right = _rightrotate!(node.right)
+  _leftrotate!(node)
 end
 
 function _updateheight!(node)
