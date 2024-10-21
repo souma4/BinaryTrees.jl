@@ -4,6 +4,7 @@ using Test
 
 @testset "TreeDataStructures.jl" begin
   @testset "AVLTree" begin
+    # insert
     tree = AVLTree{Int,Int}()
     tree[2] = 20
     tree[1] = 10
@@ -23,6 +24,37 @@ using Test
     @test tree[1] == 10.0
     @test tree[3] isa Float64
     @test tree[3] == 30.0
+
+    # update values
+    tree = AVLTree{Int,Int}()
+    tree[2] = 20
+    tree[1] = 10
+    tree[3] = 30
+    @test tree[2] == 20
+    @test tree[1] == 10
+    @test tree[3] == 30
+    tree[2] = 22
+    tree[1] = 11
+    tree[3] = 33
+    @test tree[2] == 22
+    @test tree[1] == 11
+    @test tree[3] == 33
+
+    # delete
+    tree = AVLTree{Int,Int}()
+    tree[2] = 20
+    tree[1] = 10
+    tree[3] = 30
+    delete!(tree, 3)
+    @test !isnothing(tree.root)
+    @test !isnothing(tree.root.left)
+    @test isnothing(tree.root.right)
+    delete!(tree, 1)
+    @test !isnothing(tree.root)
+    @test isnothing(tree.root.left)
+    @test isnothing(tree.root.right)
+    delete!(tree, 2)
+    @test isnothing(tree.root)
 
     # tree that accept any types
     tree = AVLTree()
