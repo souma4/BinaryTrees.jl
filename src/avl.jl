@@ -56,7 +56,7 @@ function Base.getindex(tree::AVLTree{K}, key::K) where {K}
   node.value
 end
 
-function Base.setindex!(tree::AVLTree, value, key)
+function Base.setindex!(tree::AVLTree{K}, value, key::K) where {K}
   tree.root = _insert!(tree.root, key, value)
   tree
 end
