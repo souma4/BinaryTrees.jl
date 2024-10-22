@@ -25,6 +25,8 @@ An AVL tree is a binary search tree that keeps itself balanced to ensure efficie
 ### Example Usage
 
 ```julia
+using BinaryTrees
+
 tree = AVLTree{Int,Float64}()
 
 # insert nodes into the tree
