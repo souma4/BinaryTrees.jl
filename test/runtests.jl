@@ -93,7 +93,7 @@ const BT = BinaryTrees
     BT.insert!(tree, 2, 20)
     BT.insert!(tree, 1, 10)
     BT.insert!(tree, 3, 30)
-    # deleting a key that does not exist 
+    # deleting a key that does not exist
     # does not change the tree
     BT.delete!(tree, 4)
     @test tree === tree
@@ -219,11 +219,32 @@ const BT = BinaryTrees
     @test BT.value(BT.search(tree, (0, 0, 1))) == 1
     @test BT.value(BT.search(tree, (1, 0, 0))) == 3
 
+    # traversal algorithms
+    tree = AVLTree{Int,Float64}()
+    BT.insert!(tree, 0, 5)
+    BT.insert!(tree, 1, 6)
+    BT.insert!(tree, 2, 8)
+    BT.insert!(tree, 3, 10)
+    BT.insert!(tree, 4, 20)
+    BT.insert!(tree, 5, 30)
+    BT.insert!(tree, 6, 40)
+    @test BT.key(BT.minnode(tree)) == 0
+    @test BT.key(BT.maxnode(tree)) == 6
+    @test BT.abovebelow(tree, BT.AVLNode(0, 5))[2] == nothing
+    @test BT.key.(BT.abovebelow(tree, BT.AVLNode(2, 10))) == (3, 1)
+    @test BT.key.(BT.abovebelow(BT.root(tree), BT.AVLNode(2, 10))) == (3, 1)
+    @test BT.key.(BT.abovebelow(tree, BT.AVLNode(5, 30))) == (6, 4)
+    @test BT.abovebelow(tree, nothing) == (nothing, nothing)
+    @test BT.abovebelow(BT.root(tree), nothing) == (nothing, nothing)
+
     # type stability
     tree = AVLTree{Int,Int}()
     @inferred BT.insert!(tree, 2, 20)
     @inferred BT.insert!(tree, 1, 10)
     @inferred BT.insert!(tree, 3, 30)
+    @inferred BT.minnode(tree)
+    @inferred BT.maxnode(tree)
+    @inferred BT.abovebelow(tree, BT.AVLNode(2, 20))
     @inferred Nothing BT.search(tree, 2)
     @inferred Nothing BT.search(tree, 1)
     @inferred Nothing BT.search(tree, 3)

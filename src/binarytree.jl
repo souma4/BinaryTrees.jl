@@ -143,3 +143,67 @@ function _printkeyvalue(io::IO, node::BinaryNode)
     show(ioctx, val)
   end
 end
+
+# -----------
+#  UTILITIES
+# -----------
+
+minnode(tree::BinaryTree) = minnode(root(tree))
+
+function minnode(node::BinaryNode)
+  leftnode = left(node)
+  isnothing(leftnode) ? node : minnode(leftnode)
+end
+
+minnode(node::Nothing) = nothing
+
+maxnode(tree::BinaryTree) = maxnode(root(tree))
+
+function maxnode(node::BinaryNode)
+  rightnode = right(node)
+  isnothing(rightnode) ? node : maxnode(rightnode)
+end
+
+maxnode(node::Nothing) = nothing
+
+function abovebelow(tree::BinaryNode, x::BinaryNode)
+  above, below = nothing, nothing
+  current = tree
+  # Traverse from the root to the target node, updating candidates.
+  while !isnothing(current) && key(current) != key(x)
+    if key(x) < key(current)
+      # current is a potential above (successor)
+      above = current
+      current = left(current)
+    else # x.key > current.key
+      # current is a potential below (predecessor)
+      below = current
+      current = right(current)
+    end
+  end
+
+  # If the node wasn't found, return the best candidate values
+  if isnothing(current)
+    return (above, below)
+  end
+
+  # Found the node with key equal to x.key.
+  # Now, if there is a left subtree, the true below (predecessor) is the maximum in that subtree.
+  if !isnothing(left(current))
+    below = maxnode(left(current))
+  end
+  # Similarly, if there is a right subtree, the true above (successor) is the minimum in that subtree.
+  if !isnothing(right(current))
+    above = minnode(right(current))
+  end
+
+  (above, below)
+end
+
+function abovebelow(tree::BinaryTree, x::BinaryNode)
+  abovebelow(root(tree), x)
+end
+
+function abovebelow(tree, x::Nothing)
+  (nothing, nothing)
+end
