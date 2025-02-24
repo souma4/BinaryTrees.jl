@@ -242,6 +242,11 @@ const BT = BinaryTrees
     @inferred BT.insert!(tree, 3, 30)
     @inferred Nothing BT.minnode(tree)
     @inferred Nothing BT.maxnode(tree)
+    @inferred Tuple{Union{BT.AVLNode,Nothing},Union{BT.AVLNode,Nothing}} BT.prevnext(
+      tree,
+      2
+    )
+    @inferred BT.prevnext(tree, nothing)
     @inferred Nothing BT.search(tree, 2)
     @inferred Nothing BT.search(tree, 1)
     @inferred Nothing BT.search(tree, 3)
@@ -254,6 +259,10 @@ const BT = BinaryTrees
     @inferred BT.insert!(tree, 3)
     @inferred Nothing BT.minnode(tree)
     @inferred Nothing BT.maxnode(tree)
+    @inferred Tuple{Union{BT.AVLNode,Nothing},Union{BT.AVLNode,Nothing}} BT.prevnext(
+      tree,
+      2
+    )
     @inferred Nothing BT.search(tree, 2)
     @inferred Nothing BT.search(tree, 1)
     @inferred Nothing BT.search(tree, 3)
@@ -266,6 +275,10 @@ const BT = BinaryTrees
     @inferred BT.insert!(tree, "key3", 3)
     @inferred Nothing BT.minnode(tree)
     @inferred Nothing BT.maxnode(tree)
+    @inferred Tuple{Union{BT.AVLNode,Nothing},Union{BT.AVLNode,Nothing}} BT.prevnext(
+      tree,
+      "key2"
+    )
     @inferred Nothing BT.search(tree, "key2")
     @inferred Nothing BT.search(tree, "key1")
     @inferred Nothing BT.search(tree, "key3")
@@ -278,6 +291,10 @@ const BT = BinaryTrees
     @inferred BT.insert!(tree, (1, 0, 0), 3)
     @inferred Nothing BT.minnode(tree)
     @inferred Nothing BT.maxnode(tree)
+    @inferred Tuple{Union{BT.AVLNode,Nothing},Union{BT.AVLNode,Nothing}} BT.prevnext(
+      tree,
+      (0, 1, 0)
+    )
     @inferred Nothing BT.search(tree, (0, 1, 0))
     @inferred Nothing BT.search(tree, (0, 0, 1))
     @inferred Nothing BT.search(tree, (1, 0, 0))
