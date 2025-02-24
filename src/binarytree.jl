@@ -166,44 +166,40 @@ end
 
 maxnode(node::Nothing) = nothing
 
-function abovebelow(tree::BinaryNode, x::BinaryNode)
-  above, below = nothing, nothing
-  current = tree
+function prevnext(tree::BinaryTree, k)
+  prev, next = nothing, nothing
+  current = root(tree)
   # Traverse from the root to the target node, updating candidates.
-  while !isnothing(current) && key(current) != key(x)
-    if key(x) < key(current)
-      # current is a potential above (successor)
-      above = current
+  while !isnothing(current) && key(current) != k
+    if k < key(current)
+      # current is a potential next (successor)
+      next = current
       current = left(current)
-    else # x.key > current.key
-      # current is a potential below (predecessor)
-      below = current
+    else # k.key > current.key
+      # current is a potential previous (predecessor)
+      prev = current
       current = right(current)
     end
   end
 
   # If the node wasn't found, return the best candidate values
   if isnothing(current)
-    return (above, below)
+    return (prev, next)
   end
 
   # Found the node with key equal to x.key.
-  # Now, if there is a left subtree, the true below (predecessor) is the maximum in that subtree.
+  # Now, if there is a left subtree, the true previous (predecessor) is the maximum in that subtree.
   if !isnothing(left(current))
-    below = maxnode(left(current))
+    prev = maxnode(left(current))
   end
-  # Similarly, if there is a right subtree, the true above (successor) is the minimum in that subtree.
+  # Similarly, if there is a right subtree, the true next (successor) is the minimum in that subtree.
   if !isnothing(right(current))
-    above = minnode(right(current))
+    next = minnode(right(current))
   end
 
-  (above, below)
+  (prev, next)
 end
 
-function abovebelow(tree::BinaryTree, x::BinaryNode)
-  abovebelow(root(tree), x)
-end
-
-function abovebelow(tree, x::Nothing)
+function prevnext(tree::BinaryTree, k::Nothing)
   (nothing, nothing)
 end
