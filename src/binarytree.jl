@@ -169,30 +169,29 @@ maxnode(node::Nothing) = nothing
 function prevnext(tree::BinaryTree, k)
   prev, next = nothing, nothing
   current = root(tree)
-  # Traverse from the root to the target node, updating candidates.
+  # traverse from the root to the target node, updating candidates
   while !isnothing(current) && key(current) != k
     if k < key(current)
       # current is a potential next (successor)
       next = current
       current = left(current)
-    else # k.key > current.key
+    else # k > key(current)
       # current is a potential previous (predecessor)
       prev = current
       current = right(current)
     end
   end
 
-  # If the node wasn't found, return the best candidate values
+  # if the node wasn't found, return the best candidate values
   if isnothing(current)
     return (prev, next)
   end
 
-  # Found the node with key equal to x.key.
-  # Now, if there is a left subtree, the true previous (predecessor) is the maximum in that subtree.
+  # if there is a left subtree, the true previous (predecessor) is the maximum in that subtree
   if !isnothing(left(current))
     prev = maxnode(left(current))
   end
-  # Similarly, if there is a right subtree, the true next (successor) is the minimum in that subtree.
+  # similarly, if there is a right subtree, the true next (successor) is the minimum in that subtree
   if !isnothing(right(current))
     next = minnode(right(current))
   end
@@ -200,6 +199,4 @@ function prevnext(tree::BinaryTree, k)
   (prev, next)
 end
 
-function prevnext(tree::BinaryTree, k::Nothing)
-  (nothing, nothing)
-end
+prevnext(tree::BinaryTree, k::Nothing) = (nothing, nothing)
