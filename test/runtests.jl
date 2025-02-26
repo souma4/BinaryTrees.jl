@@ -261,7 +261,6 @@ const BT = BinaryTrees
     @inferred Nothing BT.prevnext(tree, 2)[2]
     @inferred BT.prevnext(tree, nothing)
     @inferred Nothing BT.search(tree, 2)
-    @inferred Nothing BT.search(tree, 2)
     @inferred Nothing BT.search(tree, 1)
     @inferred Nothing BT.search(tree, 3)
     @inferred BT.delete!(tree, 2)
