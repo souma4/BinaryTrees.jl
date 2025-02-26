@@ -151,11 +151,11 @@ end
 """
   BinaryTrees.minnode(tree)
 
-Find the `node` with the smallest `key` in the `tree`.
+Find the node with the smallest key in the `tree`.
 
   BinaryTrees.minnode(node)
 
-Find the `node` with the smallest `key` in the subtree rooted at `node`.
+Find the node with the smallest key in the subtree rooted at `node`.
 If `nothing` is provided, `nothing` is returned.
 """
 minnode(tree::BinaryTree) = minnode(root(tree))
@@ -170,11 +170,11 @@ minnode(node::Nothing) = nothing
 """
   BinaryTrees.maxnode(tree)
 
-Find the `node` with the maximum `key` in the `tree`.
+Find the node with the maximum key in the `tree`.
 
   BinaryTrees.maxnode(node)
 
-Find the `node` with the maximum `key` in the subtree rooted at `node`.
+Find the node with the maximum key in the subtree rooted at `node`.
 If `nothing` is provided, `nothing` is returned.
 """
 maxnode(tree::BinaryTree) = maxnode(root(tree))
@@ -189,10 +189,10 @@ maxnode(node::Nothing) = nothing
 """
   BinaryTrees.prevnext(tree, k)
 
-Returns a `tuple` of each `node` immediately before
-and after the `node` with `key`, `k` within `tree`.
+Returns a tuple of each node immediately before
+and after the `tree` node with key `k`.
 
-If an adjacent `node` does not exist, `nothing` is returned in its place.
+If an adjacent node does not exist, `nothing` is returned in its place.
 If `k` is `nothing`, returns `(nothing, nothing)`.
 """
 function prevnext(tree::BinaryTree, k)
