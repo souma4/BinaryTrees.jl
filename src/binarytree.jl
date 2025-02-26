@@ -143,3 +143,89 @@ function _printkeyvalue(io::IO, node::BinaryNode)
     show(ioctx, val)
   end
 end
+
+# -----------
+#  UTILITIES
+# -----------
+
+"""
+  BinaryTrees.minnode(tree)
+
+Find the node with the smallest key in the `tree`.
+
+  BinaryTrees.minnode(node)
+
+Find the node with the smallest key in the subtree rooted at `node`.
+If `nothing` is provided, `nothing` is returned.
+"""
+minnode(tree::BinaryTree) = minnode(root(tree))
+
+function minnode(node::BinaryNode)
+  leftnode = left(node)
+  isnothing(leftnode) ? node : minnode(leftnode)
+end
+
+minnode(node::Nothing) = nothing
+
+"""
+  BinaryTrees.maxnode(tree)
+
+Find the node with the maximum key in the `tree`.
+
+  BinaryTrees.maxnode(node)
+
+Find the node with the maximum key in the subtree rooted at `node`.
+If `nothing` is provided, `nothing` is returned.
+"""
+maxnode(tree::BinaryTree) = maxnode(root(tree))
+
+function maxnode(node::BinaryNode)
+  rightnode = right(node)
+  isnothing(rightnode) ? node : maxnode(rightnode)
+end
+
+maxnode(node::Nothing) = nothing
+
+"""
+  BinaryTrees.prevnext(tree, k)
+
+Returns a tuple of each node immediately before
+and after the `tree` node with key `k`.
+
+If an adjacent node does not exist, `nothing` is returned in its place.
+If `k` is `nothing`, returns `(nothing, nothing)`.
+"""
+function prevnext(tree::BinaryTree, k)
+  prev, next = nothing, nothing
+  current = root(tree)
+  # traverse from the root to the target node, updating candidates
+  while !isnothing(current) && key(current) != k
+    if k < key(current)
+      # current is a potential next (successor)
+      next = current
+      current = left(current)
+    else # k > key(current)
+      # current is a potential previous (predecessor)
+      prev = current
+      current = right(current)
+    end
+  end
+
+  # if the node wasn't found, return the best candidate values
+  if isnothing(current)
+    return (prev, next)
+  end
+
+  # if there is a left subtree, the true previous (predecessor) is the maximum in that subtree
+  if !isnothing(left(current))
+    prev = maxnode(left(current))
+  end
+  # similarly, if there is a right subtree, the true next (successor) is the minimum in that subtree
+  if !isnothing(right(current))
+    next = minnode(right(current))
+  end
+
+  (prev, next)
+end
+
+prevnext(tree::BinaryTree, k::Nothing) = (nothing, nothing)

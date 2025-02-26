@@ -93,7 +93,7 @@ const BT = BinaryTrees
     BT.insert!(tree, 2, 20)
     BT.insert!(tree, 1, 10)
     BT.insert!(tree, 3, 30)
-    # deleting a key that does not exist 
+    # deleting a key that does not exist
     # does not change the tree
     BT.delete!(tree, 4)
     @test tree === tree
@@ -219,11 +219,32 @@ const BT = BinaryTrees
     @test BT.value(BT.search(tree, (0, 0, 1))) == 1
     @test BT.value(BT.search(tree, (1, 0, 0))) == 3
 
+    # traversal algorithms
+    tree = AVLTree{Int,Float64}()
+    BT.insert!(tree, 0, 5)
+    BT.insert!(tree, 1, 6)
+    BT.insert!(tree, 2, 8)
+    BT.insert!(tree, 3, 10)
+    BT.insert!(tree, 4, 20)
+    BT.insert!(tree, 5, 30)
+    BT.insert!(tree, 6, 40)
+    @test BT.key(BT.minnode(tree)) == 0
+    @test BT.key(BT.maxnode(tree)) == 6
+    @test BT.prevnext(tree, 0)[1] == nothing
+    @test BT.key.(BT.prevnext(tree, 2)) == (1, 3)
+    @test BT.key.(BT.prevnext(tree, 5)) == (4, 6)
+    @test BT.prevnext(tree, nothing) == (nothing, nothing)
+
     # type stability
     tree = AVLTree{Int,Int}()
     @inferred BT.insert!(tree, 2, 20)
     @inferred BT.insert!(tree, 1, 10)
     @inferred BT.insert!(tree, 3, 30)
+    @inferred Nothing BT.minnode(tree)
+    @inferred Nothing BT.maxnode(tree)
+    @inferred Nothing BT.prevnext(tree, 2)[1]
+    @inferred Nothing BT.prevnext(tree, 2)[2]
+    @inferred BT.prevnext(tree, nothing)
     @inferred Nothing BT.search(tree, 2)
     @inferred Nothing BT.search(tree, 1)
     @inferred Nothing BT.search(tree, 3)
@@ -234,6 +255,11 @@ const BT = BinaryTrees
     @inferred BT.insert!(tree, 2)
     @inferred BT.insert!(tree, 1)
     @inferred BT.insert!(tree, 3)
+    @inferred Nothing BT.minnode(tree)
+    @inferred Nothing BT.maxnode(tree)
+    @inferred Nothing BT.prevnext(tree, 2)[1]
+    @inferred Nothing BT.prevnext(tree, 2)[2]
+    @inferred BT.prevnext(tree, nothing)
     @inferred Nothing BT.search(tree, 2)
     @inferred Nothing BT.search(tree, 1)
     @inferred Nothing BT.search(tree, 3)
@@ -244,6 +270,11 @@ const BT = BinaryTrees
     @inferred BT.insert!(tree, "key2", 2)
     @inferred BT.insert!(tree, "key1", 1)
     @inferred BT.insert!(tree, "key3", 3)
+    @inferred Nothing BT.minnode(tree)
+    @inferred Nothing BT.maxnode(tree)
+    @inferred Nothing BT.prevnext(tree, "key2")[1]
+    @inferred Nothing BT.prevnext(tree, "key2")[2]
+    @inferred BT.prevnext(tree, nothing)
     @inferred Nothing BT.search(tree, "key2")
     @inferred Nothing BT.search(tree, "key1")
     @inferred Nothing BT.search(tree, "key3")
@@ -254,6 +285,11 @@ const BT = BinaryTrees
     @inferred BT.insert!(tree, (0, 1, 0), 2)
     @inferred BT.insert!(tree, (0, 0, 1), 1)
     @inferred BT.insert!(tree, (1, 0, 0), 3)
+    @inferred Nothing BT.minnode(tree)
+    @inferred Nothing BT.maxnode(tree)
+    @inferred Nothing BT.prevnext(tree, (0, 1, 0))[1]
+    @inferred Nothing BT.prevnext(tree, (0, 1, 0))[2]
+    @inferred BT.prevnext(tree, nothing)
     @inferred Nothing BT.search(tree, (0, 1, 0))
     @inferred Nothing BT.search(tree, (0, 0, 1))
     @inferred Nothing BT.search(tree, (1, 0, 0))
