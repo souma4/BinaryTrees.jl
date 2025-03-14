@@ -29,6 +29,9 @@ using BinaryTrees
 
 tree = AVLTree{Int,Float64}()
 
+# check if tree is empty
+BinaryTree.isempty(tree)
+
 # insert nodes into the tree
 BinaryTrees.insert!(tree, 2, 2.2) # root node
 BinaryTrees.insert!(tree, 1, 1.1) # left node
@@ -41,6 +44,9 @@ BinaryTrees.insert!(tree, 2, 2.4)
 BinaryTrees.search(tree, 2) # root node
 BinaryTrees.search(tree, 1) # left node
 BinaryTrees.search(tree, 3) # right node
+
+# search previous and next node using keys
+BinaryTrees.prevnext(tree, 2)
 
 # delete nodes from the tree
 BinaryTrees.delete!(tree, 1)

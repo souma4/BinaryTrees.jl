@@ -235,8 +235,15 @@ const BT = BinaryTrees
     @test BT.key.(BT.prevnext(tree, 5)) == (4, 6)
     @test BT.prevnext(tree, nothing) == (nothing, nothing)
 
+    # checking for emptiness
+    tree = AVLTree{Int,Int}()
+    @test BT.isempty(tree)
+    tree = AVLTree{Int,Float64}()
+    @test BT.isempty(tree)
+
     # type stability
     tree = AVLTree{Int,Int}()
+    @inferred BT.isempty(tree)
     @inferred BT.insert!(tree, 2, 20)
     @inferred BT.insert!(tree, 1, 10)
     @inferred BT.insert!(tree, 3, 30)
