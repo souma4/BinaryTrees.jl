@@ -56,6 +56,13 @@ Root node of the `tree`.
 root(tree::BinaryTree) = tree.root
 
 """
+    BinaryTrees.isempty(tree)
+
+Tell whether or not the `tree` is empty.
+"""
+isempty(tree::BinaryTree) = isnothing(root(tree))
+
+"""
     BinaryTrees.search(tree, key)
 
 Search the `tree` for the node that has `key`.
